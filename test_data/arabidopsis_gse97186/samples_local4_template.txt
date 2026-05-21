@@ -1,0 +1,5 @@
+SampleName	Replication	Identifier	File1	File2
+Control.rep1	C1	Control	SRR5388646_1.fastq.gz	SRR5388646_2.fastq.gz
+Control.rep2	C2	Control	SRR5388647_1.fastq.gz	SRR5388647_2.fastq.gz
+C18_0.rep1	T1	C18_0	SRR5388649_1.fastq.gz	SRR5388649_2.fastq.gz
+C18_0.rep2	T2	C18_0	SRR5388650_1.fastq.gz	SRR5388650_2.fastq.gz

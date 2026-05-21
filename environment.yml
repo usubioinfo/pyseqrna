@@ -1,0 +1,57 @@
+name: pyseqrna
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - python=3.12
+  - pip
+  # R + rpy2 for DESeq2/edgeR
+  - r-base=4.4.3
+  - r-essentials
+  - rpy2
+  - bioconductor-deseq2
+  - bioconductor-edger
+  - bioconductor-limma
+  # External tools used by the pipeline
+  - fastqc
+  - trim-galore
+  - cutadapt
+  - trimmomatic
+  - flexbar
+  - star
+  - hisat2
+  - bowtie2
+  - bwa
+  - minimap2
+  - samtools
+  - subread
+  - htseq
+  - bedtools
+  - sra-tools
+  - openjdk
+  # Python runtime libraries
+  - pandas>=1.3.0
+  - numpy>=1.20.0
+  - psutil>=5.8.0
+  - matplotlib>=3.4.0
+  - seaborn>=0.11.0
+  - scikit-learn>=0.24.0
+  - requests>=2.25.0
+  - anndata>=0.8.0
+  - scipy>=1.7.0
+  - statsmodels>=0.13.0
+  - openpyxl>=3.0.0
+  - tabulate>=0.9.0
+  - python-docx>=1.1.0
+  - future>=0.18.3
+  - patsy>=0.5.0
+  - urllib3>=1.26.0
+  - importlib-resources>=5.0.0
+  - pysam
+  - pyfastx
+  - pytest
+  - ruff
+  - pip:
+      # adjustText is imported as adjustText; keep pip name canonical.
+      - adjustText>=0.7.3

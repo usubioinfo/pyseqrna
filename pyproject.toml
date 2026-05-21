@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.black]
+line-length = 127
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 127
+target-version = "py312"
+
+[tool.ruff.lint]
+# Ignore E722 (bare except) for legacy compatibility
+ignore = ["E722"]
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore unused imports and late imports in package init files
+"**/__init__.py" = ["F401", "E402"]
+# Ignore unused imports in modules checking optional dependencies or compatibility fallbacks at runtime
+"pyseqrna/modules/alignment/base.py" = ["F401"]
+"pyseqrna/modules/alignment/stats.py" = ["F401"]
+"pyseqrna/modules/diffexp/deseq2.py" = ["F401"]
+"pyseqrna/modules/diffexp/edger.py" = ["F401"]
+"pyseqrna/modules/quality/base.py" = ["F401"]
+"pyseqrna/modules/quantification/genomic_overlaps.py" = ["F401"]
+"pyseqrna/modules/trimming/base.py" = ["F401"]
+"pyseqrna/modules/trimming/stats.py" = ["F401"]
