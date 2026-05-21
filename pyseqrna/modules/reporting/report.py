@@ -928,8 +928,7 @@ class ReportGenerator:
             )
             action_items = "\n".join(f"<li>{html.escape(item)}</li>" for item in stage["action_items"])
             plot_gallery = self._plot_gallery_html(context, plots[:24])
-            stage_cards.append(
-                f"""
+            stage_cards.append(f"""
                 <section id="{stage["stage"]}" class="card">
                   <h2>{html.escape(stage["label"])}</h2>
                   <p>
@@ -950,8 +949,7 @@ class ReportGenerator:
                   <h3>Output Files</h3>
                   <table><thead><tr><th>File</th><th>Description</th><th>Size</th></tr></thead><tbody>{file_rows}</tbody></table>
                 </section>
-                """
-            )
+                """)
 
         preview_sections = []
         for rel, preview in context.previews.items():
@@ -959,8 +957,7 @@ class ReportGenerator:
                 f"<tr><td>{html.escape(col)}</td><td>{html.escape(desc)}</td></tr>"
                 for col, desc in preview.get("column_descriptions", {}).items()
             )
-            preview_sections.append(
-                f"""
+            preview_sections.append(f"""
                 <section class="card">
                   <h3>{html.escape(rel)}</h3>
                   <p><a href="{html.escape(self._relative_report_link(context, context.output_dir / rel))}">Open result file</a></p>
@@ -969,8 +966,7 @@ class ReportGenerator:
                   <h4>Preview</h4>
                   <div class="table-wrap">{preview.get("html", "")}</div>
                 </section>
-                """
-            )
+                """)
 
         html_text = f"""<!doctype html>
 <html lang="en">

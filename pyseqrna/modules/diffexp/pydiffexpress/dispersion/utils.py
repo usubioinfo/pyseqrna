@@ -144,7 +144,7 @@ class DispersionEstimationUtils:
             observation_weights = observation_weights[:, None]
         # helper variables to control the shapes
         n_genes = np.maximum(gene_expression_counts.shape[-1], log_dispersion_parameters.shape[-1])
-        (n_samples, n_coefficients) = experimental_design_matrix.shape
+        n_samples, n_coefficients = experimental_design_matrix.shape
 
         dispersion_values = np.exp(log_dispersion_parameters)
         if use_cox_reid_adjustment:
@@ -203,16 +203,16 @@ class DispersionEstimationUtils:
                 axis=-2,
             )
 
-        assert ll_part.shape[:-1] == log_dispersion_parameters.shape[:-1], (
-            f"{ll_part.shape} vs {log_dispersion_parameters.shape}"
-        )
+        assert (
+            ll_part.shape[:-1] == log_dispersion_parameters.shape[:-1]
+        ), f"{ll_part.shape} vs {log_dispersion_parameters.shape}"
         assert ll_part.shape[-1] == n_genes
 
         if use_prior_regularization:
             prior_part = -0.5 * (log_dispersion_parameters - prior_mean_log_dispersion) ** 2 / prior_variance_log_dispersion
-            assert prior_part.shape[:-1] == log_dispersion_parameters.shape[:-1], (
-                f"{prior_part.shape} vs {log_dispersion_parameters.shape}"
-            )
+            assert (
+                prior_part.shape[:-1] == log_dispersion_parameters.shape[:-1]
+            ), f"{prior_part.shape} vs {log_dispersion_parameters.shape}"
         else:
             prior_part = 0.0
 
@@ -279,7 +279,7 @@ class DispersionEstimationUtils:
 
         # helper variables to control the shapes
         n_genes = log_dispersion_parameters.shape[0]
-        (n_samples, n_coefficients) = experimental_design_matrix.shape
+        n_samples, n_coefficients = experimental_design_matrix.shape
 
         dispersion_values = np.exp(log_dispersion_parameters)
         if use_cox_reid_adjustment:

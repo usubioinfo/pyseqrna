@@ -3,11 +3,13 @@ import os
 import pandas as pd
 from pyseqrna.modules.visualization import Visualization
 
+
 def test_visualization_init(temp_outdir):
     """Test initialization of Visualization class."""
     viz = Visualization(outdir=temp_outdir)
     assert viz.outdir == temp_outdir
     assert os.path.exists(temp_outdir)
+
 
 def test_plot_volcano(temp_outdir, sample_deg_df):
     """Test Volcano plot generation."""
@@ -20,6 +22,7 @@ def test_plot_volcano(temp_outdir, sample_deg_df):
     assert os.path.exists(expected_file)
     assert os.path.exists(expected_file.replace(".png", ".pdf"))
 
+
 def test_plot_ma(temp_outdir, sample_deg_df, sample_counts_df):
     """Test MA plot generation."""
     viz = Visualization(outdir=temp_outdir)
@@ -30,6 +33,7 @@ def test_plot_ma(temp_outdir, sample_deg_df, sample_counts_df):
     assert os.path.exists(expected_file)
     assert os.path.exists(expected_file.replace(".png", ".pdf"))
 
+
 def test_pca_plot(temp_outdir, sample_counts_df):
     """Test PCA plot generation."""
     viz = Visualization(outdir=temp_outdir)
@@ -39,6 +43,7 @@ def test_pca_plot(temp_outdir, sample_counts_df):
     expected_file = os.path.join(temp_outdir, "Sample_Plots", "test_PCA_plot.png")
     assert os.path.exists(expected_file)
     assert os.path.exists(expected_file.replace(".png", ".pdf"))
+
 
 def test_plot_venn_and_upset(temp_outdir):
     """Test Venn and UpSet-style intersection plot generation."""
@@ -63,6 +68,7 @@ def test_plot_venn_and_upset(temp_outdir):
     assert os.path.exists(upset_file)
     assert os.path.exists(upset_file.replace(".png", ".pdf"))
 
+
 def test_dryrun(temp_outdir, sample_deg_df):
     """Test dry run mode."""
     viz = Visualization(outdir=temp_outdir, dryrun=True)
@@ -71,6 +77,7 @@ def test_dryrun(temp_outdir, sample_deg_df):
 
     expected_file = os.path.join(temp_outdir, "Volcano_Plots", "dryrun_CondA-CondB_volcano.png")
     assert not os.path.exists(expected_file)
+
 
 def test_run_method(temp_outdir, sample_deg_df, sample_counts_df):
     """Test the run method."""

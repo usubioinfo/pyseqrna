@@ -5,21 +5,19 @@ import numpy as np
 from pathlib import Path
 from pyseqrna.modules.coexpression import PyCoexpression, CoexpressionError
 
+
 def test_pycoexpression_dryrun(temp_outdir):
     """Test PyCoexpression in dry-run mode."""
     matrix_file = os.path.join(temp_outdir, "dummy_matrix.csv")
     pd.DataFrame({"Gene": ["G1"], "S1": [1.0]}).to_csv(matrix_file, index=False)
 
-    coexp = PyCoexpression(
-        matrix_file=matrix_file,
-        out_dir=temp_outdir,
-        dryrun=True
-    )
+    coexp = PyCoexpression(matrix_file=matrix_file, out_dir=temp_outdir, dryrun=True)
 
     assert coexp.dryrun is True
     res = coexp.run()
     assert res["command"] == "pycoexpression_native_run"
     assert res["out_dir"] == temp_outdir
+
 
 def test_pycoexpression_load_matrix(temp_outdir):
     """Test loading different file formats."""
@@ -47,6 +45,7 @@ def test_pycoexpression_load_matrix(temp_outdir):
     with pytest.raises(CoexpressionError, match="Unsupported matrix file format"):
         coexp_bad._load_matrix()
 
+
 def test_pycoexpression_collapse_replicates(temp_outdir):
     """Test replicate averaging logic."""
     csv_file = os.path.join(temp_outdir, "matrix_reps.csv")
@@ -55,16 +54,18 @@ def test_pycoexpression_collapse_replicates(temp_outdir):
     # CondB-R1, CondB-R2
     # CondC1, CondC2
     # CondD (no suffix)
-    df_data = pd.DataFrame({
-        "Gene": ["G1", "G2"],
-        "CondA_1": [10.0, 20.0],
-        "CondA_2": [20.0, 30.0],
-        "CondB-R1": [30.0, 40.0],
-        "CondB-R2": [40.0, 50.0],
-        "CondC1": [50.0, 60.0],
-        "CondC2": [60.0, 70.0],
-        "CondD": [70.0, 80.0],
-    })
+    df_data = pd.DataFrame(
+        {
+            "Gene": ["G1", "G2"],
+            "CondA_1": [10.0, 20.0],
+            "CondA_2": [20.0, 30.0],
+            "CondB-R1": [30.0, 40.0],
+            "CondB-R2": [40.0, 50.0],
+            "CondC1": [50.0, 60.0],
+            "CondC2": [60.0, 70.0],
+            "CondD": [70.0, 80.0],
+        }
+    )
     df_data.to_csv(csv_file, index=False)
 
     coexp = PyCoexpression(matrix_file=csv_file, out_dir=temp_outdir)
@@ -83,6 +84,7 @@ def test_pycoexpression_collapse_replicates(temp_outdir):
     assert collapsed.loc[0, "CondC"] == 55.0
     # CondD should be (70, 80)
     assert collapsed.loc[0, "CondD"] == 70.0
+
 
 def test_pycoexpression_run_basic(temp_outdir):
     """Test PyCoexpression run with a small synthetic dataset."""
@@ -121,14 +123,7 @@ def test_pycoexpression_run_basic(temp_outdir):
     coexp = PyCoexpression(matrix_file=matrix_file, out_dir=temp_outdir)
 
     # Run with K = 2 and small cluster_size = 5
-    res = coexp.run(
-        tightness=1.0,
-        k_values="2",
-        outlier=3.0,
-        cluster_size=5,
-        replicates=False,
-        preprocessing=False
-    )
+    res = coexp.run(tightness=1.0, k_values="2", outlier=3.0, cluster_size=5, replicates=False, preprocessing=False)
 
     assert res["command"] == "pycoexpression_native_run"
 
@@ -146,13 +141,14 @@ def test_pycoexpression_run_basic(temp_outdir):
 
     # Group 1 and 2 genes should be clustered into cluster 1 or 2 (valid clusters)
     valid_clustered = clusters_df[clusters_df["Cluster"].isin([1, 2])]
-    assert len(valid_clustered) >= 25 # most should be clustered correctly
+    assert len(valid_clustered) >= 25  # most should be clustered correctly
 
     # Verify cluster specific files exist
     assert (out_path / "Cluster_1.tsv").exists()
     assert (out_path / "Cluster_1.png").exists()
     assert (out_path / "Cluster_2.tsv").exists()
     assert (out_path / "Cluster_2.png").exists()
+
 
 def test_pycoexpression_optimal_k_selection(temp_outdir):
     """Test Silhouette-based K estimation."""
@@ -182,19 +178,13 @@ def test_pycoexpression_optimal_k_selection(temp_outdir):
 
     # Test range: 2 3 4
     # The silhouette optimizer should evaluate 2, 3, 4 and select the best (should be 3)
-    res = coexp.run(
-        tightness=1.0,
-        k_values="2 3 4",
-        outlier=3.0,
-        cluster_size=5,
-        replicates=False,
-        preprocessing=False
-    )
+    res = coexp.run(tightness=1.0, k_values="2 3 4", outlier=3.0, cluster_size=5, replicates=False, preprocessing=False)
 
     out_path = Path(temp_outdir)
     assert (out_path / "coexpression_clusters.tsv").exists()
     # Check that Cluster 3 files exist
     assert (out_path / "Cluster_3.tsv").exists()
+
 
 def test_pycoexpression_errors(temp_outdir):
     """Test exceptions handled by PyCoexpression."""
@@ -212,11 +202,7 @@ def test_pycoexpression_errors(temp_outdir):
 
     # Not enough non-flat genes
     flat_file = os.path.join(temp_outdir, "flat.csv")
-    pd.DataFrame({
-        "Gene": ["G1", "G2"],
-        "S1": [1.0, 1.0],
-        "S2": [1.0, 1.0]
-    }).to_csv(flat_file, index=False)
+    pd.DataFrame({"Gene": ["G1", "G2"], "S1": [1.0, 1.0], "S2": [1.0, 1.0]}).to_csv(flat_file, index=False)
     coexp_flat = PyCoexpression(matrix_file=flat_file, out_dir=temp_outdir)
     with pytest.raises(CoexpressionError, match="Not enough non-flat genes available for clustering"):
         coexp_flat.run()

@@ -8,44 +8,46 @@ from pyseqrna.utils.stage_registry import PIPELINE_STAGE_NAMES, get_pipeline_sta
 from pyseqrna.__version__ import __version__
 from pyseqrna.cli.argument_manager import ArgumentManager, __version__ as cli_version
 
+
 def test_pipeline_init(temp_outdir):
     """Test Pipeline initialization."""
     # Create a dummy config file
     config_file = os.path.join(temp_outdir, "config.ini")
-    with open(config_file, 'w') as f:
+    with open(config_file, "w") as f:
         f.write("[general]\nproject_name=test_project\n")
 
     try:
         pipeline = Pipeline(
-            input_file='dummy_input.txt',
-            samples_path='dummy_samples',
-            reference_genome='dummy_genome.fasta',
-            feature_file='dummy_annotation.gtf',
+            input_file="dummy_input.txt",
+            samples_path="dummy_samples",
+            reference_genome="dummy_genome.fasta",
+            feature_file="dummy_annotation.gtf",
             output_dir=temp_outdir,
-            logger=None
+            logger=None,
         )
 
         assert pipeline.output_dir == os.path.abspath(temp_outdir)
         # assert "visualization" in pipeline.pipeline_stages # Removed invalid assertion
-        assert hasattr(pipeline, 'run_visualization') # Check if method exists
+        assert hasattr(pipeline, "run_visualization")  # Check if method exists
 
     except Exception as e:
         pytest.fail(f"Pipeline initialization failed: {e}")
+
 
 def test_pipeline_stages_order(temp_outdir):
     """Test that all expected pipeline stage methods exist in the correct logical order."""
     # Verify all expected stage methods exist on the Pipeline class
     expected_stages = [
-        'run_quality_control',
-        'run_trimming',
-        'run_quality_control_trim',
-        'run_alignment',
-        'run_quantification',
-        'run_normalization',
-        'run_differential_expression',
-        'run_visualization',
-        'run_gene_ontology',
-        'run_pathway_enrichment',
+        "run_quality_control",
+        "run_trimming",
+        "run_quality_control_trim",
+        "run_alignment",
+        "run_quantification",
+        "run_normalization",
+        "run_differential_expression",
+        "run_visualization",
+        "run_gene_ontology",
+        "run_pathway_enrichment",
     ]
 
     for stage in expected_stages:
@@ -56,12 +58,12 @@ def test_pipeline_stages_order(temp_outdir):
 def test_stage_registry_matches_pipeline(temp_outdir):
     """Test that shared stage metadata can build the pipeline execution plan."""
     pipeline = Pipeline(
-        input_file='dummy_input.txt',
-        samples_path='dummy_samples',
-        reference_genome='dummy_genome.fasta',
-        feature_file='dummy_annotation.gtf',
+        input_file="dummy_input.txt",
+        samples_path="dummy_samples",
+        reference_genome="dummy_genome.fasta",
+        feature_file="dummy_annotation.gtf",
         output_dir=temp_outdir,
-        logger=None
+        logger=None,
     )
 
     stages = get_pipeline_stages(pipeline)
@@ -87,10 +89,10 @@ def test_checkpoint_stage_order_uses_registry(temp_outdir):
 def test_resume_policy_is_deterministic(temp_outdir):
     """Test completed-stage handling without interactive prompts."""
     pipeline = Pipeline(
-        input_file='dummy_input.txt',
-        samples_path='dummy_samples',
-        reference_genome='dummy_genome.fasta',
-        feature_file='dummy_annotation.gtf',
+        input_file="dummy_input.txt",
+        samples_path="dummy_samples",
+        reference_genome="dummy_genome.fasta",
+        feature_file="dummy_annotation.gtf",
         output_dir=temp_outdir,
         logger=None,
         resume_policy="skip",
@@ -114,10 +116,10 @@ def test_resume_policy_is_deterministic(temp_outdir):
 def test_run_record_contains_resume_policy(temp_outdir):
     """Test that run records capture deterministic resume behavior."""
     pipeline = Pipeline(
-        input_file='dummy_input.txt',
-        samples_path='dummy_samples',
-        reference_genome='dummy_genome.fasta',
-        feature_file='dummy_annotation.gtf',
+        input_file="dummy_input.txt",
+        samples_path="dummy_samples",
+        reference_genome="dummy_genome.fasta",
+        feature_file="dummy_annotation.gtf",
         output_dir=temp_outdir,
         logger=None,
         resume_policy="rerun",

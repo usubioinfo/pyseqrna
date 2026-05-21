@@ -762,11 +762,11 @@ class MultimappedGroupsAnalyzer:
                 "min_count": self.min_count,
                 "percent_sample": self.percent_sample,
                 "output_files": len(output_files),
-                "total_grouped_reads": int(
-                    results_df[[col for col in results_df.columns if col in self.bam_files]].sum().sum()
-                )
-                if not results_df.empty
-                else 0,
+                "total_grouped_reads": (
+                    int(results_df[[col for col in results_df.columns if col in self.bam_files]].sum().sum())
+                    if not results_df.empty
+                    else 0
+                ),
             }
 
             self.logger.info("Multimapped groups analysis completed successfully")
