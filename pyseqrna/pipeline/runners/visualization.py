@@ -127,9 +127,9 @@ class VisualizationRunner:
             visualizer.run(
                 norm_counts_file=norm_counts_file,
                 de_results_file=de_results_file,
-                filtered_deg_file=str(diffexp_dir / "Filtered_DEGs.xlsx")
-                if (diffexp_dir / "Filtered_DEGs.xlsx").exists()
-                else None,
+                filtered_deg_file=(
+                    str(diffexp_dir / "Filtered_DEGs.xlsx") if (diffexp_dir / "Filtered_DEGs.xlsx").exists() else None
+                ),
                 mmg_de_results_file=mmg_de_results_file,
                 mmg_counts_file=mmg_counts_file,
                 filtered_mmg_file=filtered_mmg_file,

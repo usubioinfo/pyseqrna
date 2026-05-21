@@ -428,9 +428,9 @@ class QuantificationRunner:
             # Create the normalizer
             normalizer = create_normalizer(
                 normalizer_name=self.ctx.normalization_method,
-                count_matrix_file=count_matrix_input
-                if self.ctx.quantification_results is not None
-                else str(count_matrix_file),
+                count_matrix_file=(
+                    count_matrix_input if self.ctx.quantification_results is not None else str(count_matrix_file)
+                ),
                 annotation_file=self.ctx.feature_file,
                 out_dir=str(normalization_dir),
                 param_dir=self.ctx.param_dir,
