@@ -8,6 +8,8 @@
 
 PySeqRNA is a production-oriented RNA-seq analysis pipeline for moving from raw reads to interpretable biological results. Version 1.0.0 restructures the project around modular pipeline stages, INI-driven configuration, checkpoint-aware resume, local and SLURM execution, multimapped gene-group analysis, built-in differential expression, visualization, functional annotation, and report generation.
 
+![PySeqRNA workflow](docs/_static/pyseqrna_workflow.png)
+
 ## Highlights
 
 - End-to-end RNA-seq workflow: quality control, trimming, alignment, BAM preparation, alignment statistics, quantification, normalization, clustering, co-expression, differential expression, visualization, GO/KEGG annotation, and reporting.
